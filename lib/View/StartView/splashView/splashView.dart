@@ -23,7 +23,7 @@ class _SplashViewState extends State<SplashView> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Future.delayed(Duration(seconds: 15),(){
+    Future.delayed(Duration(seconds: 2),(){
     islogin();
     //   isChecked();
       Get.offAndToNamed(AppRoutes.onboardingScreen);
