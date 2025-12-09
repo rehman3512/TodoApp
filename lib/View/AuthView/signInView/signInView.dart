@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todoapp/Controller/authController.dart';
 import 'package:todoapp/Widgets/alternativeButton/alternativeButton.dart';
+import 'package:todoapp/Widgets/showMessage/showMessage.dart';
 import 'package:todoapp/constants/appAssets/appAssets.dart';
-import 'package:todoapp/constants/appColors/AppColors.dart';
+import 'package:todoapp/constants/appColors/appColors.dart';
 import 'package:todoapp/Widgets/gradiantcolor/gradiantcolor.dart';
 import 'package:todoapp/Widgets/isLoading/isLoading.dart';
 import 'package:todoapp/Widgets/textFormFieldWidget/textFormFieldWidget.dart';
@@ -14,6 +15,7 @@ class SignInView extends StatelessWidget {
   SignInView({super.key});
 
   final AuthController signinController = Get.put(AuthController());
+  final RxBool isPasswordVisible = false.obs;
 
   @override
   Widget build(BuildContext context) {
@@ -28,75 +30,77 @@ class SignInView extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(
-                        height: 30,
-                      ),
+                      SizedBox(height: 30),
                       Align(
-                          alignment: Alignment.center,
-                          child: Image.asset(AppAssets.whiteCheckMarkImage)),
-                      SizedBox(
-                        height: 20,
+                        alignment: Alignment.center,
+                        child: Image.asset(AppAssets.whiteCheckMarkImage),
                       ),
+                      SizedBox(height: 20),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         child: TextWidget(
-                            text: "Welcome Back to DO IT ",
-                            color: AppColors.whiteColor,
-                            fontsize: 25,
-                            fontweight: FontWeight.w500),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: TextWidget(
-                            text: "Have an other productive day !",
-                            color: AppColors.whiteColor,
-                            fontsize: 18,
-                            fontweight: FontWeight.w500),
-                      ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      TextFormFieldWidget(
-                        icon: Icon(
-                          Icons.email,
-                          color: AppColors.blackColor,
+                          text: "Welcome Back to DO IT ",
+                          color: AppColors.whiteColor,
+                          fontsize: 25,
+                          fontweight: FontWeight.w500,
                         ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: TextWidget(
+                          text: "Have an other productive day !",
+                          color: AppColors.whiteColor,
+                          fontsize: 18,
+                          fontweight: FontWeight.w500,
+                        ),
+                      ),
+                      SizedBox(height: 30),
+                      TextFormFieldWidget(
+                        icon: Icon(Icons.email, color: AppColors.blackColor),
                         text: "E-mail",
                         controller: signinController.emailController,
                       ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      TextFormFieldWidget(
-                        icon: Icon(
-                          Icons.lock,
-                          color: AppColors.blackColor,
+                      SizedBox(height: 30),
+                      Obx(
+                        () => TextFormFieldWidget(
+                          icon: Icon(Icons.lock, color: AppColors.blackColor),
+                          text: "Password",
+                          obsecure: !isPasswordVisible.value,
+                          controller: signinController.passwordController,
+                          suffixIcon: GestureDetector(
+                            onTap: () {
+                              isPasswordVisible.value =
+                                  !isPasswordVisible.value;
+                            },
+                            child: Icon(
+                              isPasswordVisible.value
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: AppColors.blackColor,
+                            ),
+                          ),
                         ),
-                        text: "Password",
-                        obsecure: true,
-                        controller: signinController.passwordController,
                       ),
-                      SizedBox(
-                        height: 15,
-                      ),
+                      SizedBox(height: 15),
                       ListTile(
                         trailing: TextButton(
-                          onPressed: () {},
-                          child: TextWidget(
-                              text: "Forgot Password",
-                              color: AppColors.whiteColor,
-                              fontsize: 14,
-                              fontweight: FontWeight.w500),
+                          onPressed: () {
+                            signinController.ForgotPassword();
+                          },
+                          child: signinController.isForgot.value
+                              ? IsLoading()
+                              : TextWidget(
+                                  text: "Forgot Password",
+                                  color: AppColors.whiteColor,
+                                  fontsize: 14,
+                                  fontweight: FontWeight.w500,
+                                ),
                         ),
                       ),
-                      SizedBox(
-                        height: 15,
-                      ),
+                      SizedBox(height: 15),
                       Obx(() {
                         return signinController.isLoading.value
-                            ? Center(
-                                child: IsLoading(),
-                              )
+                            ? Center(child: IsLoading())
                             : GestureDetector(
                                 onTap: () {
                                   signinController.signin();
@@ -104,55 +108,66 @@ class SignInView extends StatelessWidget {
                                 child: Alternativebutton(text: "sign in"),
                               );
                       }),
-                      SizedBox(
-                        height: 15,
-                      ),
+                      SizedBox(height: 15),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           TextWidget(
-                              text: "Don't have an account?",
-                              color: AppColors.whiteColor,
-                              fontsize: 14,
-                              fontweight: FontWeight.w500),
-                          SizedBox(
-                            width: 5,
+                            text: "Don't have an account?",
+                            color: AppColors.whiteColor,
+                            fontsize: 14,
+                            fontweight: FontWeight.w500,
                           ),
+                          SizedBox(width: 5),
                           TextButton(
                             onPressed: () {
                               signinController.emailController.clear();
                               signinController.passwordController.clear();
-                              Get.offNamed(AppRoutes.signupScreen, );
+                              Get.offNamed(AppRoutes.signupScreen);
                             },
                             child: TextWidget(
-                                text: "sign up",
-                                color: AppColors.turquoiseColor,
-                                fontsize: 14,
-                                fontweight: FontWeight.w500),
+                              text: "sign up",
+                              color: AppColors.turquoiseColor,
+                              fontsize: 14,
+                              fontweight: FontWeight.w500,
+                            ),
                           ),
                         ],
                       ),
-                      SizedBox(
-                        height: 30,
-                      ),
+                      SizedBox(height: 30),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         child: Row(
                           children: [
                             TextWidget(
-                                text: "sign in with:",
-                                color: AppColors.whiteColor,
-                                fontsize: 14,
-                                fontweight: FontWeight.w400),
-                            SizedBox(width: 10),
-                            Image.asset(AppAssets.googleButtonImage),
-                            SizedBox(
-                              width: 10,
+                              text: "sign in with:",
+                              color: AppColors.whiteColor,
+                              fontsize: 14,
+                              fontweight: FontWeight.w400,
                             ),
-                            Image.asset(AppAssets.iphoneButtonImage),
+                            SizedBox(width: 10),
+                            GestureDetector(
+                              onTap: () {
+                                ShowMessage.successMessage(
+                                  "Coming soon",
+                                  "Social login will be available in the next update",
+                                );
+                              },
+                              child: Image.asset(AppAssets.googleButtonImage),
+                            ),
+                            SizedBox(width: 10),
+                            GestureDetector(
+                              onTap: () {
+                                ShowMessage.errorMessage(
+                                  "Coming soon",
+                                  "Social login will be available in the next update",
+                                );
+                              },
+                              child: Image.asset(AppAssets.iphoneButtonImage),
+                            ),
                           ],
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),

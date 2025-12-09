@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todoapp/Controller/homeController.dart';
+import 'package:todoapp/Controller/profilecontroller.dart';
 import 'package:todoapp/constants/appAssets/appAssets.dart';
-import 'package:todoapp/constants/appColors/AppColors.dart';
+import 'package:todoapp/constants/appColors/appColors.dart';
 import 'package:todoapp/routes/approutes.dart';
 import 'package:todoapp/Widgets/gradiantcolor/gradiantcolor.dart';
 import 'package:todoapp/Widgets/textWidget/textWidget.dart';
@@ -10,6 +11,8 @@ import 'package:todoapp/Widgets/textWidget/textWidget.dart';
 class HomeBar extends StatelessWidget {
   HomeBar({super.key});
   final HomeController controller = Get.find<HomeController>();
+  final ProfileController profileController = Get.find<ProfileController>();
+
 
   void navigateToDetails(task) {
     controller.titleController.text = task.title;
@@ -30,10 +33,7 @@ class HomeBar extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 20),
-
-                    // 🔝 Top Row
+                  children: [SizedBox(height: 20),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Row(
@@ -42,34 +42,37 @@ class HomeBar extends StatelessWidget {
                             radius: 30,
                             backgroundImage: AssetImage(AppAssets.mainLogoImage),
                           ),
-                          const SizedBox(width: 10),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              TextWidget(
-                                text: "REHMAN kHAN",
-                                color: AppColors.whiteColor,
-                                fontsize: 18,
-                                fontweight: FontWeight.w600,
-                              ),
-                              TextWidget(
-                                text: "rehman113@gmial.com",
-                                color: Colors.grey,
-                                fontsize: 14,
-                                fontweight: FontWeight.w500,
-                              ),
-                            ],
-                          ),
-                          const Spacer(),
+                          SizedBox(width: 10),
+                          Obx(() {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                TextWidget(
+                                  text: profileController.name.isNotEmpty
+                                      ? profileController.name.value
+                                      : "User Name",
+                                  color: AppColors.whiteColor,
+                                  fontsize: 18,
+                                  fontweight: FontWeight.w600,
+                                ),
+                                TextWidget(
+                                  text: profileController.email.isNotEmpty
+                                      ? profileController.email.value
+                                      : "user@email.com",
+                                  color: Colors.grey,
+                                  fontsize: 14,
+                                  fontweight: FontWeight.w500,
+                                ),
+                              ],
+                            );
+                          }),
+                          Spacer(),
                           Icon(Icons.notifications,
                               color: AppColors.whiteColor, size: 30),
                         ],
                       ),
                     ),
-
-                    const SizedBox(height: 20),
-
-                    // 🧑‍🤝‍🧑 Group Tasks
+                    SizedBox(height: 20),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: TextWidget(
@@ -79,23 +82,18 @@ class HomeBar extends StatelessWidget {
                         fontweight: FontWeight.w400,
                       ),
                     ),
-
-                    const SizedBox(height: 20),
-
+                    SizedBox(height: 20),
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
                         children: [
-                          _buildGroupCard("Design Meeting", "Tomorrow | 10:30pm"),
-                          _buildGroupCard("Project Meeting", "Thursday | 10:30pm"),
+                          buildGroupCard("Design Meeting", "Tomorrow | 10:30pm"),
+                          buildGroupCard("Project Meeting", "Thursday | 10:30pm"),
                           const SizedBox(width: 10),
                         ],
                       ),
                     ),
-
-                    const SizedBox(height: 20),
-
-                    // 🔴 Incomplete Tasks
+                    SizedBox(height: 20),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: TextWidget(
@@ -105,9 +103,7 @@ class HomeBar extends StatelessWidget {
                         fontweight: FontWeight.w500,
                       ),
                     ),
-
-                    const SizedBox(height: 10),
-
+                    SizedBox(height: 10),
                     Obx(() {
                       final incompleteTasks =
                       controller.taskList.where((t) => t.status != "Complete").toList();
@@ -115,7 +111,7 @@ class HomeBar extends StatelessWidget {
                         children: incompleteTasks.map((task) {
                           return GestureDetector(
                             onTap: () => navigateToDetails(task), // 👈 Navigate on tap
-                            child: _buildTaskContainer(
+                            child: buildTaskContainer(
                               title: task.title,
                               subtitle:
                               "${task.date.day}-${task.date.month} | ${task.time.format(context)}",
@@ -125,10 +121,7 @@ class HomeBar extends StatelessWidget {
                         }).toList(),
                       );
                     }),
-
-                    const SizedBox(height: 20),
-
-                    // ✅ Complete Tasks
+                    SizedBox(height: 20),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: TextWidget(
@@ -138,17 +131,15 @@ class HomeBar extends StatelessWidget {
                         fontweight: FontWeight.w500,
                       ),
                     ),
-
-                    const SizedBox(height: 10),
-
+                    SizedBox(height: 10),
                     Obx(() {
                       final completeTasks =
                       controller.taskList.where((t) => t.status == "Complete").toList();
                       return Column(
                         children: completeTasks.map((task) {
                           return GestureDetector(
-                            onTap: () => navigateToDetails(task), // 👈 Navigate on tap
-                            child: _buildTaskContainer(
+                            onTap: () => navigateToDetails(task),
+                            child: buildTaskContainer(
                               title: task.title,
                               subtitle:
                               "${task.date.day}-${task.date.month} | ${task.time.format(context)}",
@@ -170,8 +161,7 @@ class HomeBar extends StatelessWidget {
     );
   }
 
-  /// 🔧 Helper widget for group task card
-  Widget _buildGroupCard(String title, String subtitle) {
+  Widget buildGroupCard(String title, String subtitle) {
     return Container(
       height: 110,
       width: 200,
@@ -205,8 +195,7 @@ class HomeBar extends StatelessWidget {
     );
   }
 
-  /// 🔧 Helper widget for task container
-  Widget _buildTaskContainer({
+  Widget buildTaskContainer({
     required String title,
     required String subtitle,
     required bool showCheck,
