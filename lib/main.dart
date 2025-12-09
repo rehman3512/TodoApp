@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todoapp/Controller/homeController.dart';
 import 'package:todoapp/Controller/authController.dart';
+import 'package:todoapp/Controller/profilecontroller.dart';
 import 'package:todoapp/firebase_options.dart';
 import 'package:todoapp/routes/approutes.dart';
 
@@ -13,6 +14,7 @@ void main() async {
   );
   Get.put(HomeController());
   Get.put(AuthController());
+  Get.put(ProfileController());
   runApp(MyApp());
 }
 

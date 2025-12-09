@@ -9,4 +9,5 @@ class AppColors{
   static Color  turquoiseColor = Color(0xff63D9F3);
   static Color  greenColor = Color(0xff3EDA73);
   static Color  greyColor = Color(0xff808080);
+  static const Color blueGrayColor = Color(0xFF2A3A5D);
 }

@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -17,6 +16,8 @@ class ProfileController extends GetxController {
   final Rx<File?> profileImage = Rx<File?>(null);
   final RxString profileImageUrl = ''.obs;
   final RxString selectedGender = ''.obs;
+  final RxString name = ''.obs;
+  final RxString email = ''.obs;
 
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
@@ -27,11 +28,16 @@ class ProfileController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    nameController.addListener(() {
+      name.value = nameController.text;
+    });
+    emailController.addListener(() {
+      email.value = emailController.text;
+    });
     loadUserProfile();
   }
 
-  // Load user profile data
-  Future<void> loadUserProfile() async {
+  loadUserProfile() async {
     try {
       isLoading.value = true;
       final User? user = auth.currentUser;
@@ -40,7 +46,7 @@ class ProfileController extends GetxController {
         emailController.text = user.email ?? '';
 
         final DocumentSnapshot userDoc = await firestore
-            .collection('users')
+            .collection('Users')
             .doc(user.uid)
             .get();
 
@@ -59,8 +65,7 @@ class ProfileController extends GetxController {
     }
   }
 
-  // Pick image from gallery or camera
-  Future<void> pickImage(ImageSource source) async {
+  pickImage(ImageSource source) async {
     try {
       final ImagePicker picker = ImagePicker();
       final XFile? image = await picker.pickImage(source: source);
@@ -73,8 +78,8 @@ class ProfileController extends GetxController {
     }
   }
 
-  // Update profile
-  Future<void> updateProfile() async {
+
+  updateProfile() async {
     if (!formKey.currentState!.validate()) return;
 
     try {
@@ -84,7 +89,6 @@ class ProfileController extends GetxController {
       if (user != null) {
         String imageUrl = profileImageUrl.value;
 
-        // Upload new image if selected
         if (profileImage.value != null) {
           final Reference ref = storage
               .ref()
@@ -95,9 +99,8 @@ class ProfileController extends GetxController {
           imageUrl = await ref.getDownloadURL();
         }
 
-        // Update user data in Firestore
         await firestore
-            .collection('users')
+            .collection('Users')
             .doc(user.uid)
             .set({
           'name': nameController.text,
@@ -118,7 +121,7 @@ class ProfileController extends GetxController {
   }
 
   // Remove profile image and reset fields
-  Future<void> removeProfile() async {
+  removeProfile() async {
     try {
       final User? user = auth.currentUser;
 
@@ -131,7 +134,7 @@ class ProfileController extends GetxController {
 
         // Clear profile data in Firestore
         await firestore
-            .collection('users')
+            .collection('Users')
             .doc(user.uid)
             .update({
           'profileImage': FieldValue.delete(),

@@ -16,7 +16,6 @@ class HomeController extends GetxController {
   Rx<TimeOfDay?> selectedTime = Rx<TimeOfDay?>(null);
 
   RxList<TaskModel> taskList = <TaskModel>[].obs;
-
   RxString searchQuery = "".obs;
   RxString selectedSort = "All".obs;
   RxBool isLoading = false.obs;
@@ -24,17 +23,21 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    getUserInfo(); // userId fetch karenge
+    getUserInfo();
   }
 
-  // ✅ Get User Info and Fetch Tasks
+  @override
+  void onClose() {
+    titleController.dispose();
+    descriptionController.dispose();
+    super.onClose();
+  }
+
   getUserInfo() async {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       userId.value = user.uid;
       userEmail.value = user.email ?? "";
-
-      // userId milne ke baad hi fetchTasks call karein
       fetchTasks();
     }
   }
@@ -55,12 +58,61 @@ class HomeController extends GetxController {
     );
   }
 
+  // insertTask() async {
+  //   if (titleController.text.isEmpty ||
+  //       descriptionController.text.isEmpty ||
+  //       selectedDate.value == null ||
+  //       selectedTime.value == null) {
+  //     ShowMessage.errorMessage("Error", "All fields are required!");
+  //     return;
+  //   }
+  //
+  //   isLoading.value = true;
+  //   try {
+  //     final docRef = await FirebaseFirestore.instance.collection("UserData").add({
+  //       "title": titleController.text,
+  //       "description": descriptionController.text,
+  //       "date": selectedDate.value!.toIso8601String(),
+  //       "time": "${selectedTime.value!.hour}:${selectedTime.value!.minute}",
+  //       "userId": userId.value,
+  //       "status": "Pending",
+  //     });
+  //
+  //     taskList.add(TaskModel(
+  //       id: docRef.id,
+  //       title: titleController.text,
+  //       description: descriptionController.text,
+  //       date: selectedDate.value!,
+  //       time: selectedTime.value!,
+  //       status: "Pending",
+  //     ));
+  //
+  //     clearFields();
+  //     ShowMessage.successMessage("Success", "Task added successfully");
+  //     Get.back();
+  //   } catch (e) {
+  //     ShowMessage.errorMessage("Error", e.toString());
+  //   } finally {
+  //     isLoading.value = false;
+  //   }
+  // }
+
   insertTask() async {
     if (titleController.text.isEmpty ||
         descriptionController.text.isEmpty ||
         selectedDate.value == null ||
         selectedTime.value == null) {
       ShowMessage.errorMessage("Error", "All fields are required!");
+      return;
+    }
+
+    // ✅ Duplicate title check
+    bool isDuplicate = taskList.any(
+            (task) => task.title.trim().toLowerCase() == titleController.text.trim().toLowerCase()
+    );
+
+    if (isDuplicate) {
+      ShowMessage.errorMessage("Error", "A task with this title already exists!");
       return;
     }
 
@@ -94,6 +146,7 @@ class HomeController extends GetxController {
     }
   }
 
+
   fetchTasks() async {
     if (userId.value.isEmpty) return;
 
@@ -104,7 +157,6 @@ class HomeController extends GetxController {
           .where("userId", isEqualTo: userId.value)
           .get();
 
-      // for each loop
       for (var doc in snapshot.docs) {
         final data = doc.data();
         final timeParts = (data["time"] as String).split(":");
@@ -164,8 +216,6 @@ class HomeController extends GetxController {
           status: task.status,
         );
       }
-
-       // clearFields();
       ShowMessage.successMessage("Updated", "Task updated successfully");
     } catch (e) {
       ShowMessage.errorMessage("Error", e.toString());
@@ -217,15 +267,5 @@ class HomeController extends GetxController {
     selectedTime.value = null;
   }
 
-  void logout() async {
-    try {
-      await FirebaseAuth.instance.signOut();
-      if (Get.isRegistered<HomeController>()) {
-        Get.delete<HomeController>(force: true);
-      }
-      Get.offAllNamed('/login');
-    } catch (e) {
-      ShowMessage.errorMessage("Error", e.toString());
-    }
-  }
+
 }
