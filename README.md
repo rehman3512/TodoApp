@@ -4,7 +4,7 @@ TodoApp is a modern task management application built with Flutter, Firebase, an
 
 🔑 Key Features
 
-User Authentication:
+User Authentication :
 
 Email & Password login and signup with Firebase Authentication
 
@@ -12,7 +12,7 @@ Email verification after signup
 
 Forgot Password functionality with email reset
 
-Task Management:
+Task Management :
 
 Add, edit, and delete tasks
 
@@ -22,7 +22,7 @@ Prevent duplicate task titles
 
 Persistent storage using Cloud Firestore
 
-Task Details:
+Task Details :
 
 View task title, description, date, time, and status
 
@@ -30,23 +30,19 @@ Edit tasks via bottom sheet interface
 
 Status toggle and pin option for task prioritization
 
-Search & Sort:
+Search & Sort :
 
 Real-time task search by title
 
 Filter tasks by All, Complete, or Incomplete
 
-Navigation & State Management:
+Navigation & State Management :
 
 GetX Routing for clean and reactive navigation between screens
 
 GetX for reactive state management, dependency injection, and efficient UI rebuilds
 
-Professional UI:
-
-Gradient backgrounds and consistent color theme
-
-Responsive layouts with interactive widgets
+Professional UI :
 
 Gradient backgrounds and consistent color theme
 
