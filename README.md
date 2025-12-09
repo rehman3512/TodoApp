@@ -47,5 +47,3 @@ GetX for reactive state management, dependency injection, and efficient UI rebui
 Gradient backgrounds and consistent color theme
 
 Responsive layouts with interactive widgets
-
-Responsive layouts with interactive widgets
