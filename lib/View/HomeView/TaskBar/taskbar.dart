@@ -5,7 +5,7 @@ import 'package:todoapp/Widgets/BottomSheetWidget/bottomsheetwidget.dart';
 import 'package:todoapp/Widgets/gradiantcolor/gradiantcolor.dart';
 import 'package:todoapp/Widgets/containerWidget/containerWidget.dart';
 import 'package:todoapp/Widgets/textWidget/textWidget.dart';
-import 'package:todoapp/constants/appColors/AppColors.dart';
+import 'package:todoapp/constants/appColors/appColors.dart';
 
 class TaskBar extends StatelessWidget {
   TaskBar({super.key});
@@ -13,6 +13,12 @@ class TaskBar extends StatelessWidget {
   final HomeController controller = Get.put(HomeController());
 
   void showBottomSheet(BuildContext context) {
+
+    controller.titleController.clear();
+    controller.descriptionController.clear();
+    controller.selectedDate.value = null;
+    controller.selectedTime.value = null;
+
     showModalBottomSheet(
       backgroundColor: AppColors.whiteColor,
       context: context,
@@ -33,14 +39,11 @@ class TaskBar extends StatelessWidget {
         child: SafeArea(
           child: Column(
             children: [
-              const SizedBox(height: 20),
-
-              /// 🔍 Search + Sort Row
+              SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Row(
                   children: [
-                    /// Search
                     Expanded(
                       flex: 3,
                       child: Container(
@@ -65,10 +68,7 @@ class TaskBar extends StatelessWidget {
                         ),
                       ),
                     ),
-
-                    const SizedBox(width: 10),
-
-                    /// Sort Dropdown
+                    SizedBox(width: 10),
                     Expanded(
                       flex: 2,
                       child: Obx(
@@ -108,10 +108,7 @@ class TaskBar extends StatelessWidget {
                   ],
                 ),
               ),
-
-              const SizedBox(height: 20),
-
-              /// 📝 Tasks List
+              SizedBox(height: 20),
               Expanded(
                 child: Obx(() {
                   final tasks = controller.filteredTasks;

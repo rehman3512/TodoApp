@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:todoapp/Controller/profilecontroller.dart';
 import 'package:todoapp/Controller/authController.dart';
 import 'package:todoapp/Widgets/ListWidget/listwidget.dart';
-import 'package:todoapp/constants/appColors/AppColors.dart';
+import 'package:todoapp/constants/appColors/appColors.dart';
 import 'package:todoapp/Widgets/gradiantcolor/gradiantcolor.dart';
 import 'package:todoapp/Widgets/textWidget/textWidget.dart';
 import 'package:todoapp/routes/approutes.dart';
@@ -31,14 +31,10 @@ class SettingBar extends StatelessWidget {
                             GestureDetector( onTap: (){
                               Get.back();
                             },
-                              child: CircleAvatar(
-                                radius: 15,
-                                backgroundColor: AppColors.whiteColor,
-                                child: Center(
-                                  child: Icon(
-                                    Icons.arrow_back_ios_new_outlined,
-                                    color: AppColors.turquoiseColor,
-                                  ),
+                              child: Center(
+                                child: Icon(
+                                  Icons.arrow_back_ios_new_outlined,
+                                  color: AppColors.turquoiseColor,
                                 ),
                               ),
                             ), SizedBox(width: 80,),
@@ -47,7 +43,7 @@ class SettingBar extends StatelessWidget {
                         ),
                       ),
                       SizedBox(
-                        height: 100,
+                        height: 75,
                       ),
                       GestureDetector(onTap: (){
                         if (!Get.isRegistered<ProfileController>()) {
@@ -64,7 +60,7 @@ class SettingBar extends StatelessWidget {
                           icon: Icons.document_scanner, text: "Terms & Policies"),
                       Divider(),
                       SizedBox(
-                        height: 100,
+                        height: 140,
                       ),
                       Align(
                         alignment: Alignment.center,

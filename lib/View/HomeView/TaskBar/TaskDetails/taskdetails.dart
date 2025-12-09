@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:todoapp/Controller/homeController.dart';
 import 'package:todoapp/Model/taskmodel.dart';
 import 'package:todoapp/Widgets/SmallButton/smallbutton.dart';
-import 'package:todoapp/constants/appColors/AppColors.dart';
+import 'package:todoapp/constants/appColors/appColors.dart';
 import 'package:todoapp/Widgets/gradiantcolor/gradiantcolor.dart';
 import 'package:todoapp/Widgets/textWidget/textWidget.dart';
 import 'package:todoapp/Widgets/IsLoading/isLoading.dart';
@@ -31,7 +31,6 @@ class TaskDetailsView extends StatelessWidget {
       );
     }
 
-    /// ✅ Sirf ek bar controller ke fields set karo (har rebuild pe nahi)
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (taskController.titleController.text.isEmpty) {
         taskController.titleController.text = task.title;
@@ -65,8 +64,6 @@ class TaskDetailsView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: 20),
-
-                      /// 🔙 Back Button + Title
                       Row(
                         children: [
                           IconButton(
@@ -84,8 +81,6 @@ class TaskDetailsView extends StatelessWidget {
                         ],
                       ),
                       SizedBox(height: 40),
-
-                      /// 📝 Title + Edit
                       Row(
                         children: [
                           Expanded(
@@ -97,10 +92,8 @@ class TaskDetailsView extends StatelessWidget {
                             ),
                           ),
                           IconButton(
-                            icon: Icon(Icons.edit_note,
-                                color: AppColors.whiteColor),
+                            icon: Icon(Icons.edit_note, color: AppColors.whiteColor),
                             onPressed: () {
-                              /// ✅ BottomSheet open (Edit Mode)
                               Get.bottomSheet(
                                 Container(
                                   padding: const EdgeInsets.all(20),
@@ -109,142 +102,147 @@ class TaskDetailsView extends StatelessWidget {
                                     borderRadius: BorderRadius.vertical(
                                       top: Radius.circular(25),
                                     ),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black26,
+                                        blurRadius: 10,
+                                        offset: Offset(0, -5),
+                                      ),
+                                    ],
                                   ),
-                                  height:
-                                  MediaQuery.of(context).size.height * 0.6,
+                                  height: MediaQuery.of(context).size.height * 0.65,
                                   child: SingleChildScrollView(
                                     child: Obx(() {
                                       if (taskController.isLoading.value) {
                                         return Center(child: IsLoading());
                                       }
                                       return Column(
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
+                                        crossAxisAlignment: CrossAxisAlignment.stretch,
                                         children: [
+                                          Center(
+                                            child: Container(
+                                              width: 50,
+                                              height: 5,
+                                              decoration: BoxDecoration(
+                                                color: Colors.white54,
+                                                borderRadius: BorderRadius.circular(10),
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(height: 15),
                                           TextWidget(
                                             text: "Edit Task",
                                             color: AppColors.whiteColor,
-                                            fontsize: 18,
-                                            fontweight: FontWeight.w500,
+                                            fontsize: 20,
+                                            fontweight: FontWeight.w600,
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          SizedBox(height: 25),
+                                          TextField(
+                                            controller: taskController.titleController,
+                                            style: TextStyle(color: AppColors.whiteColor),
+                                            decoration: InputDecoration(
+                                              labelText: "Title",
+                                              labelStyle: TextStyle(color: Colors.white70),
+                                              filled: true,
+                                              fillColor: AppColors.blueGrayColor,
+                                              border: OutlineInputBorder(
+                                                borderRadius: BorderRadius.circular(12),
+                                                borderSide: BorderSide.none,
+                                              ),
+                                            ),
                                           ),
                                           SizedBox(height: 15),
                                           TextField(
-                                            controller:
-                                            taskController.titleController,
-                                            style: TextStyle(
-                                                color: AppColors.whiteColor),
-                                            decoration: InputDecoration(
-                                              labelText: "Title",
-                                              labelStyle: TextStyle(
-                                                  color: Colors.white70),
-                                              enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Colors.white54),
-                                              ),
-                                              focusedBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Colors.white),
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(height: 10),
-                                          TextField(
-                                            controller: taskController
-                                                .descriptionController,
+                                            controller: taskController.descriptionController,
                                             maxLines: 5,
-                                            style: TextStyle(
-                                                color: AppColors.whiteColor),
+                                            style: TextStyle(color: AppColors.whiteColor),
                                             decoration: InputDecoration(
                                               labelText: "Description",
-                                              labelStyle: TextStyle(
-                                                  color: Colors.white70),
-                                              enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Colors.white54),
-                                              ),
-                                              focusedBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color: Colors.white),
+                                              labelStyle: TextStyle(color: Colors.white70),
+                                              filled: true,
+                                              fillColor: AppColors.blueGrayColor,
+                                              border: OutlineInputBorder(
+                                                borderRadius: BorderRadius.circular(12),
+                                                borderSide: BorderSide.none,
                                               ),
                                             ),
                                           ),
-                                          SizedBox(height: 10),
-
-                                          /// 📅 Date & Time Pickers
+                                          SizedBox(height: 15),
                                           Row(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
                                               GestureDetector(
-                                                onTap: () =>
-                                                    taskController.pickDate(
-                                                        context),
+                                                onTap: () => taskController.pickDate(context),
                                                 child: Container(
                                                   padding: EdgeInsets.symmetric(
-                                                      horizontal: 10,
-                                                      vertical: 12),
+                                                      horizontal: 12, vertical: 14),
                                                   decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                        color: Colors.white54),
-                                                    borderRadius:
-                                                    BorderRadius.circular(
-                                                        8),
+                                                    color: AppColors.blueGrayColor,
+                                                    borderRadius: BorderRadius.circular(12),
                                                   ),
-                                                  child: Text(
-                                                    taskController.selectedDate
-                                                        .value ==
-                                                        null
-                                                        ? "Select Date"
-                                                        : "${taskController.selectedDate.value!.day}-${taskController.selectedDate.value!.month}-${taskController.selectedDate.value!.year}",
-                                                    style: TextStyle(
-                                                        color: Colors.white),
+                                                  child: Obx(
+                                                        () => Text(
+                                                      taskController.selectedDate.value == null
+                                                          ? "Select Date"
+                                                          : "${taskController.selectedDate.value!.day}-${taskController.selectedDate.value!.month}-${taskController.selectedDate.value!.year}",
+                                                      style: TextStyle(color: Colors.white),
+                                                    ),
                                                   ),
                                                 ),
                                               ),
                                               GestureDetector(
-                                                onTap: () =>
-                                                    taskController.pickTime(
-                                                        context),
+                                                onTap: () => taskController.pickTime(context),
                                                 child: Container(
                                                   padding: EdgeInsets.symmetric(
-                                                      horizontal: 10,
-                                                      vertical: 12),
+                                                      horizontal: 12, vertical: 14),
                                                   decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                        color: Colors.white54),
-                                                    borderRadius:
-                                                    BorderRadius.circular(
-                                                        8),
+                                                    color: AppColors.blueGrayColor,
+                                                    borderRadius: BorderRadius.circular(12),
                                                   ),
-                                                  child: Text(
-                                                    taskController.selectedTime
-                                                        .value ==
-                                                        null
-                                                        ? "Select Time"
-                                                        : taskController
-                                                        .selectedTime
-                                                        .value!
-                                                        .format(context),
-                                                    style: TextStyle(
-                                                        color: Colors.white),
+                                                  child: Obx(
+                                                        () => Text(
+                                                      taskController.selectedTime.value == null
+                                                          ? "Select Time"
+                                                          : taskController.selectedTime.value!
+                                                          .format(context),
+                                                      style: TextStyle(color: Colors.white),
+                                                    ),
                                                   ),
                                                 ),
                                               ),
                                             ],
                                           ),
-                                          SizedBox(height: 20),
-                                          ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                              backgroundColor:
-                                              AppColors.turquoiseColor,
-                                            ),
-                                            onPressed: () async {
-                                              await taskController
-                                                  .updateTask(currentTask);
-                                              Get.back(); // BottomSheet close
+                                          SizedBox(height: 25),
+                                          GestureDetector(
+                                            onTap: () async {
+                                              await taskController.updateTask(currentTask);
+                                              Get.back();
                                             },
-                                            child: Text("Update Task"),
+                                            child: Container(
+                                              height: 50,
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(15),
+                                                gradient: LinearGradient(
+                                                  colors: [
+                                                    AppColors.turquoiseColor,
+                                                    AppColors.skyBlueColor
+                                                  ],
+                                                  begin: Alignment.topLeft,
+                                                  end: Alignment.bottomRight,
+                                                ),
+                                              ),
+                                              child: Center(
+                                                child: TextWidget(
+                                                  text: "Update Task",
+                                                  color: AppColors.whiteColor,
+                                                  fontsize: 18,
+                                                  fontweight: FontWeight.w600,
+                                                ),
+                                              ),
+                                            ),
                                           ),
+                                          SizedBox(height: 15),
                                         ],
                                       );
                                     }),
@@ -254,11 +252,10 @@ class TaskDetailsView extends StatelessWidget {
                               );
                             },
                           )
+
                         ],
                       ),
                       SizedBox(height: 20),
-
-                      /// 📅 Date + Time Display
                       Row(
                         children: [
                           Icon(Icons.today,
@@ -286,8 +283,6 @@ class TaskDetailsView extends StatelessWidget {
                       SizedBox(height: 20),
                       Divider(color: AppColors.whiteColor),
                       SizedBox(height: 10),
-
-                      /// 🔄 Status Switch
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -315,8 +310,6 @@ class TaskDetailsView extends StatelessWidget {
                       SizedBox(height: 20),
                       Divider(color: AppColors.whiteColor),
                       SizedBox(height: 20),
-
-                      /// 📝 Description
                       TextWidget(
                         text: currentTask.description,
                         color: AppColors.whiteColor,
@@ -324,8 +317,6 @@ class TaskDetailsView extends StatelessWidget {
                         fontweight: FontWeight.w400,
                       ),
                       SizedBox(height: 30),
-
-                      /// ✅ Action Buttons
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [

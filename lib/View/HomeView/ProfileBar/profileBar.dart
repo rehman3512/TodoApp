@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:todoapp/Controller/profilecontroller.dart';
-import 'package:todoapp/constants/appColors/AppColors.dart';
+import 'package:todoapp/Widgets/textWidget/textWidget.dart';
+import 'package:todoapp/constants/appColors/appColors.dart';
 import 'package:todoapp/Widgets/gradiantcolor/gradiantcolor.dart';
 
 class ProfileBar extends StatelessWidget {
@@ -21,8 +22,20 @@ class ProfileBar extends StatelessWidget {
                     child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(height: 70),
-              // Profile Picture
+              Row(
+                children: [
+                  GestureDetector( onTap: (){
+                    Get.back();
+                  },
+                    child: IconButton(onPressed: (){
+                      Get.back();
+                    }, icon: Icon(Icons.arrow_back_ios_new,color: AppColors.turquoiseColor,))
+                  ),
+                  SizedBox(width: 20,),
+                  TextWidget(text: "Manage Profile", color: AppColors.whiteColor, fontsize: 28, fontweight: FontWeight.w400)
+                ],
+              ),
+              SizedBox(height: 60),
               Stack(
                 children: [
                   Container(
@@ -76,19 +89,17 @@ class ProfileBar extends StatelessWidget {
                       ),
                       child: IconButton(
                         icon: const Icon(Icons.camera_alt, color: Colors.white, size: 20),
-                        onPressed: () => _showImagePickerOptions(context),
+                        onPressed: () => showImagePickerOptions(context),
                       ),
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 60),
-              // User Info Form
+              SizedBox(height: 60),
               Form(
                 key: controller.formKey,
                 child: Column(
                   children: [
-                    // Name Field
                     TextFormField(
                       style: TextStyle(color: AppColors.whiteColor),
                       controller: controller.nameController,
@@ -107,8 +118,7 @@ class ProfileBar extends StatelessWidget {
                         return null;
                       },
                     ),
-                    const SizedBox(height: 20),
-                    // Email Field (Read-only)
+                    SizedBox(height: 20),
                     TextFormField(
                       style: TextStyle(color: AppColors.whiteColor),
                       controller: controller.emailController,
@@ -122,8 +132,7 @@ class ProfileBar extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20),
-                    // Age Field
+                    SizedBox(height: 20),
                     TextFormField(
                       style: TextStyle(color: AppColors.whiteColor),
                       controller: controller.ageController,
@@ -146,12 +155,12 @@ class ProfileBar extends StatelessWidget {
                         return null;
                       },
                     ),
-                    const SizedBox(height: 20),
-                    // Gender Dropdown
+                    SizedBox(height: 20),
                     DropdownButtonFormField<String>(
                       value: controller.selectedGender.value.isEmpty
                           ? null
                           : controller.selectedGender.value,
+                      dropdownColor: AppColors.navyBlueColor,
                       decoration: InputDecoration(
                         labelStyle: TextStyle(color: AppColors.whiteColor),
                         labelText: 'Gender',
@@ -160,10 +169,10 @@ class ProfileBar extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                      items: const [
-                        DropdownMenuItem(value: 'Male', child: Text('Male')),
-                        DropdownMenuItem(value: 'Female', child: Text('Female')),
-                        DropdownMenuItem(value: 'Other', child: Text('Other')),
+                      items: [
+                        DropdownMenuItem(value: 'Male', child: TextWidget(text: 'Male', color: AppColors.whiteColor, fontsize: 14, fontweight: FontWeight.w600)),
+                        DropdownMenuItem(value: 'Female', child: TextWidget(text: 'Female', color: AppColors.whiteColor, fontsize: 14, fontweight: FontWeight.w600)),
+                        DropdownMenuItem(value: 'Other', child: TextWidget(text: 'Other', color: AppColors.whiteColor, fontsize: 14, fontweight: FontWeight.w600)),
                       ],
                       onChanged: (value) {
                         controller.selectedGender.value = value ?? '';
@@ -175,8 +184,7 @@ class ProfileBar extends StatelessWidget {
                         return null;
                       },
                     ),
-                    const SizedBox(height: 30),
-                    // Save Button
+                    SizedBox(height: 30),
                     SizedBox(
                       width: double.infinity,
                       height: 50,
@@ -206,8 +214,7 @@ class ProfileBar extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20),
-                    // Remove Profile Button
+                    SizedBox(height: 20),
                     SizedBox(
                       width: double.infinity,
                       height: 50,
@@ -239,7 +246,7 @@ class ProfileBar extends StatelessWidget {
     );
   }
 
-  void _showImagePickerOptions(BuildContext context) {
+  void showImagePickerOptions(BuildContext context) {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
