@@ -1,8 +1,11 @@
-TodoApp – Flutter Task Management App
+TodoApp – Flutter Task Management App:
+
 TodoApp is a modern task management application built with Flutter, Firebase, and GetX state management. It follows the MVC architecture to keep the code clean, modular, and maintainable. The app helps users efficiently manage tasks, track progress, and maintain productivity.
 
-🔑 Key Features
+🔑 Key Features:
+
 User Authentication:
+
 Email & Password login and signup with Firebase Authentication
 Email verification after signup
 Forgot Password functionality with email reset
