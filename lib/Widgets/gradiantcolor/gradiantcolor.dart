@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todoapp/constants/appColors/AppColors.dart';
+import 'package:todoapp/constants/appColors/appColors.dart';
 class GradiantColor extends StatelessWidget {
   final Widget child;
   const GradiantColor({super.key,required this.child});
