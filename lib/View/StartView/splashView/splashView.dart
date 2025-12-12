@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:todoapp/constants/appAssets/appAssets.dart';
-import 'package:todoapp/constants/appColors/AppColors.dart';
+import 'package:todoapp/constants/appColors/appColors.dart';
 import 'package:todoapp/Widgets/gradiantcolor/gradiantcolor.dart';
 import 'package:todoapp/Widgets/textWidget/textWidget.dart';
 import 'package:todoapp/View/HomeView/homeView.dart';
@@ -23,9 +23,8 @@ class _SplashViewState extends State<SplashView> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Future.delayed(Duration(seconds: ),(){
+    Future.delayed(Duration(seconds: 2),(){
     islogin();
-    //   isChecked();
       Get.offAndToNamed(AppRoutes.onboardingScreen);
     });
   }
@@ -41,36 +40,28 @@ class _SplashViewState extends State<SplashView> {
         Get.off(()=>HomeView());
       }
   }
-  // isChecked()
-  // {
-  //   if(FirebaseAuth.instance.currentUser!=null){
-  //     Get.to(()=>HomeView());
-  //   }
-  //   else
-  //   {
-  //     Get.to(()=>SignUpView());
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(children: [
-        GradiantColor(child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(height: 120,),
-            Image.asset(AppAssets.whiteCheckMarkImage),
-            SizedBox(height: 30,),
-            Text("DO IT",style: GoogleFonts.darumadropOne(
-              fontSize: 36,fontWeight: FontWeight.w400,
-              color: AppColors.whiteColor
-            ),),
-            Spacer(),
-            TextWidget(text: "v 1.0.0", color: AppColors.whiteColor, fontsize: 20,
-                fontweight: FontWeight.w500),
-            SizedBox(height: 100,),
-        ],))
+        GradiantColor(child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 40),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: 70,),
+              Image.asset(AppAssets.whiteCheckMarkImage),
+              SizedBox(height: 30,),
+              Text("DO IT",style: GoogleFonts.darumadropOne(
+                fontSize: 36,fontWeight: FontWeight.w400,
+                color: AppColors.whiteColor
+              ),),
+              Spacer(),
+              TextWidget(text: "v 1.0.0", color: AppColors.whiteColor, fontsize: 20,
+                  fontweight: FontWeight.w500),
+          ],),
+        ))
       ],)
     );
   }
