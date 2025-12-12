@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todoapp/Controller/homeController.dart';
-import 'package:todoapp/constants/appColors/AppColors.dart';
+import 'package:todoapp/constants/appColors/appColors.dart';
 import 'package:todoapp/Widgets/textWidget/textWidget.dart';
 import 'package:todoapp/Widgets/showMessage/showMessage.dart';
 
@@ -9,7 +9,6 @@ class BottomSheetWidget extends StatelessWidget {
   BottomSheetWidget({super.key});
 
   final HomeController taskController = Get.put(HomeController());
-
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +22,7 @@ class BottomSheetWidget extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const SizedBox(height: 30),
-
-              // ✅ TITLE FIELD
+              SizedBox(height: 30),
               Container(
                 height: 45,
                 width: 360,
@@ -52,9 +49,7 @@ class BottomSheetWidget extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
-
-              // ✅ DESCRIPTION FIELD
+              SizedBox(height: 20),
               Container(
                 height: 160,
                 width: 360,
@@ -82,9 +77,7 @@ class BottomSheetWidget extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
-
-              // ✅ DATE & TIME
+              SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -147,12 +140,9 @@ class BottomSheetWidget extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 20),
-
-              // ✅ BUTTONS WITH LOADING
               Obx(() => Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // CANCEL BUTTON
                   GestureDetector(
                     onTap: () => Get.back(),
                     child: Container(
@@ -177,7 +167,6 @@ class BottomSheetWidget extends StatelessWidget {
                     ),
                   ),
 
-                  // CREATE BUTTON OR LOADING
                   taskController.isLoading.value
                       ? Container(
                     height: MediaQuery.of(context).size.height * 0.06,
@@ -195,7 +184,6 @@ class BottomSheetWidget extends StatelessWidget {
                   )
                       : InkWell(
                     onTap: () async {
-                      // ✅ Validation
                       if (taskController.titleController.text.isEmpty) {
                         ShowMessage.errorMessage("Error", "Please enter a title");
                         return;
@@ -212,8 +200,6 @@ class BottomSheetWidget extends StatelessWidget {
                         ShowMessage.errorMessage("Error", "Please select a time");
                         return;
                       }
-
-                      // ✅ All fields filled
                       await taskController.insertTask();
                     },
                     child: Container(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:todoapp/constants/appColors/AppColors.dart';
+import 'package:todoapp/constants/appColors/appColors.dart';
 import 'package:todoapp/Widgets/textWidget/textWidget.dart';
 
 class BottombarWidget extends StatelessWidget {
