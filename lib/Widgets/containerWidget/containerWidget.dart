@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todoapp/Controller/homeController.dart';
-import 'package:todoapp/constants/appColors/AppColors.dart';
+import 'package:todoapp/constants/appColors/appColors.dart';
 import 'package:todoapp/Widgets/textWidget/textWidget.dart';
 import 'package:todoapp/routes/approutes.dart';
 
@@ -17,7 +17,6 @@ class ContainerWidget extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-        // Set controller values for TaskDetailsView
         controller.titleController.text = task.title;
         controller.descriptionController.text = task.description;
         controller.selectedDate.value = task.date;
